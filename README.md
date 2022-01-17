@@ -6,19 +6,20 @@ Main criteria for the project:
 - Code should be covered Unit Tests
 
 ## Project structure
-src : source code for apps
-- InterestRateCalculator : service responsible for interest rate calculation
-  - Domain : types and calculation logic for interest rate
-  - Domain.Tests : Unit Tests
-  - InterestRateCalculatorService : gRPC service endpoint
-- AmortizationCalculator : service responsible for amortization calculation
-  - Domain : types and calculation logic for amortization
-  - Domain.Tests : Unit Tests
-  - AmortizationCalculatorService : gRPC service endpoint
-- GateWay : API GateWay that facades calculation services
-  - WebApi : ASP.NET Core Web API endpoint
-  - WebApi.Tests : Unit Tests
-
+    .
+    ├── src                                                 # source code for apps
+    │   ├── InterestRateCalculator                          # service responsible for interest rate calculation
+    │   │   ├── Domain                                      # types and calculation logic for interest rate
+    │   │   ├── Domain.Tests                                # Unit Tests
+    │   │   ├── InterestRateCalculatorService               # gRPC service endpoint
+    │   ├── AmortizationCalculator                          # service responsible for amortization calculation
+    │   │   ├── Domain                                      # types and calculation logic for amortization rate
+    │   │   ├── Domain.Tests                                # Unit Tests
+    │   │   ├── AmortizationCalculatorService               # gRPC service endpoint
+    │   └── GateWay                                         # API GateWay that facades calculation services
+    │   │   ├── WebApi                                      # ASP.NET Core Web API endpoint
+    │   │   ├── WebApi.Tests                                # Unit Tests
+    
 ## Branches
 GitFlow is used as branching model
 - main: Contains latest stable release 
