@@ -7,18 +7,18 @@ Main criteria for the project:
 
 ## Project structure
     .
-    ├── src                                                 # source code for apps
-    │   ├── InterestRateCalculator                          # service responsible for interest rate calculation
-    │   │   ├── Domain                                      # types and calculation logic for interest rate
-    │   │   ├── Domain.Tests                                # Unit Tests
-    │   │   └── InterestRateCalculatorService               # service endpoint (ASP.NET Core Web API)
-    │   ├── AmortizationCalculator                          # service responsible for amortization calculation
-    │   │   ├── AmortizationCalculatorService               # service endpoint (gRPC)
-    │   │   ├── Domain                                      # types and calculation logic for amortization rate
-    │   │   └── Domain.Tests                                # Unit Tests
-    │   └── GateWay                                         # API GateWay that facades calculation services
-    │   │   ├── WebApi                                      # entrypoint for the project (ASP.NET Core Web API)
-    │   │   └── WebApi.Tests                                # Unit Tests
+    └── src                                                 # source code for apps
+        ├── InterestRateCalculator                          # service responsible for interest rate calculation
+        │   ├── Domain                                      # types and calculation logic for interest rate
+        │   ├── Domain.Tests                                # Unit Tests
+        │   └── InterestRateCalculatorService               # service endpoint (ASP.NET Core Web API)
+        ├── AmortizationCalculator                          # service responsible for amortization calculation
+        │   ├── AmortizationCalculatorService               # service endpoint (gRPC)
+        │   ├── Domain                                      # types and calculation logic for amortization rate
+        │   └── Domain.Tests                                # Unit Tests
+        └── GateWay                                         # API GateWay that facades calculation services
+            ├── WebApi                                      # entrypoint for the project (ASP.NET Core Web API)
+            └── WebApi.Tests                                # Unit Tests
     
 ## Branches
 GitFlow is used as branching model
