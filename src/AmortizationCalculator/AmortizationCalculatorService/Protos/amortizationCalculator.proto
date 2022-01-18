@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option csharp_namespace = "AmortizationCalculatorService";
+
+package amortizationCalculator;
+
+
+service AmortizationCalculator {
+  rpc Calculate (Loan) returns (Amortization);
+}
+
+message Loan {
+  float amount = 1;
+  float period = 2;
+  float monthlyPayment = 3;
+}
+
+message Amortization {
+  repeated PeriodicData data = 1;
+}
+
+message PeriodicData {
+  int32 period = 1;
+  int32 payment = 2;
+  int32 balance = 3;
+}

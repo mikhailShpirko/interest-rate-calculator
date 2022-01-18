@@ -31,7 +31,7 @@ namespace AmortizationCalculatorService
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<GreeterService>();
+                endpoints.MapGrpcService<AmortizationCalculator>();
 
                 endpoints.MapGet("/", async context =>
                 {
