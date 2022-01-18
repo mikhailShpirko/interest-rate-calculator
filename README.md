@@ -11,14 +11,14 @@ Main criteria for the project:
     │   ├── InterestRateCalculator                          # service responsible for interest rate calculation
     │   │   ├── Domain                                      # types and calculation logic for interest rate
     │   │   ├── Domain.Tests                                # Unit Tests
-    │   │   ├── InterestRateCalculatorService               # gRPC service endpoint
+    │   │   └── InterestRateCalculatorService               # service endpoint (ASP.NET Core Web API)
     │   ├── AmortizationCalculator                          # service responsible for amortization calculation
+    │   │   ├── AmortizationCalculatorService               # service endpoint (gRPC)
     │   │   ├── Domain                                      # types and calculation logic for amortization rate
-    │   │   ├── Domain.Tests                                # Unit Tests
-    │   │   ├── AmortizationCalculatorService               # gRPC service endpoint
+    │   │   └── Domain.Tests                                # Unit Tests
     │   └── GateWay                                         # API GateWay that facades calculation services
-    │   │   ├── WebApi                                      # ASP.NET Core Web API endpoint
-    │   │   ├── WebApi.Tests                                # Unit Tests
+    │   │   ├── WebApi                                      # entrypoint for the project (ASP.NET Core Web API)
+    │   │   └── WebApi.Tests                                # Unit Tests
     
 ## Branches
 GitFlow is used as branching model
