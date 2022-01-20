@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="ValidationException.fs" />
     <Compile Include="Loan.fs" />
   </ItemGroup>
 

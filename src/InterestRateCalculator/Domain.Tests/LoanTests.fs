@@ -10,20 +10,36 @@ type LoanTests () =
     let _monthlyPayment = 600.0
     let _loan = new Loan(_amount, _termYears, _monthlyPayment)
 
+    [<TestMethod; ExpectedException(typeof<ValidationException>)>]
+    member this.Ctor_WrongAmount_ValidationException () =
+        (new Loan(0.0, 1.0, 1.0))
+        |> ignore
+
+    [<TestMethod; ExpectedException(typeof<ValidationException>)>]
+    member this.Ctor_WrongTermYears_ValidationException () =
+        (new Loan(1.0, 0.0, 1.0))
+        |> ignore
+
+    [<TestMethod; ExpectedException(typeof<ValidationException>)>]
+    member this.Ctor_WrongMonthlyPayment_ValidationException () =
+        (new Loan(1.0, 1.0, 0.0))
+        |> ignore
+
     [<TestMethod>]
     member this.Ctor_Amount_ProperlyMappedToMemeber () =
         let loanAmount = _loan.Amount
-        Assert.AreEqual(_amount, loanAmount);
+        Assert.AreEqual(_amount, loanAmount)
     
     [<TestMethod>]
     member this.Ctor_TermYears_ProperlyMappedToMemeber () =
         let loanTermYears = _loan.TermYears
-        Assert.AreEqual(_termYears, loanTermYears);
+        Assert.AreEqual(_termYears, loanTermYears)
+        Assert.ThrowsException
       
     [<TestMethod>]
     member this.Ctor_MonthlyPayment_ProperlyMappedToMemeber () =
         let loanMontlyPayment = _loan.MontlyPayment
-        Assert.AreEqual(_monthlyPayment, loanMontlyPayment);
+        Assert.AreEqual(_monthlyPayment, loanMontlyPayment)
 
     [<TestMethod>]
     member this.Ctor_NumberOfPaymentPeriods_ProperlyMappedToMemeber () =
@@ -33,14 +49,14 @@ type LoanTests () =
     [<TestMethod>]
     member this.Ctor_TotalPayment_ProperlyCalculated () =
         let loanTotalPayment = _loan.TotalPayment
-        Assert.AreEqual(_monthlyPayment * _termYears * 12.0, loanTotalPayment);
+        Assert.AreEqual(_monthlyPayment * _termYears * 12.0, loanTotalPayment)
 
     [<TestMethod>]
     member this.Ctor_TotalInterestPaid_ProperlyCalculated () =
         let loanTotalPayment = _loan.TotalInterestPaid
-        Assert.AreEqual(_monthlyPayment * _termYears * 12.0 - _amount, loanTotalPayment);
+        Assert.AreEqual(_monthlyPayment * _termYears * 12.0 - _amount, loanTotalPayment)
 
     [<TestMethod>]
     member this.Ctor_InterestRate_ProperlyCalculated () =
         let loanInterestRate = _loan.InterestRate
-        Assert.AreEqual(0.05065, loanInterestRate);
+        Assert.AreEqual(0.05065, loanInterestRate)

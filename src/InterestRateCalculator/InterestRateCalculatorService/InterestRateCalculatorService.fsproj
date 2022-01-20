@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="WeatherForecast.fs" />
-    <Compile Include="Controllers/WeatherForecastController.fs" />
+    <Compile Include="Models\Response.fs" />
+    <Compile Include="Controllers\LoanInterestRateCalculatorController.fs" />   
     <Compile Include="Startup.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
