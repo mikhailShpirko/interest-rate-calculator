@@ -14,7 +14,7 @@ type LoanInterestRateCalculatorController () =
     member _.Get(amout : float, termYears : float, montlyPayment : float) =
         try
             let loan = new Loan(amout, termYears, montlyPayment)
-            Response.Success(loan.InterestRate)
+            Response.Success<float>(loan.InterestRate)
         with  
             | :? ValidationException as ex -> Response.Error<float>(ex.Message)
             | ex -> Response.Error<float>("Error during processing" )
