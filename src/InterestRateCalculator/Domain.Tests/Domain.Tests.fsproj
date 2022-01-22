@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="LoanFactoryTests.fs" />
     <Compile Include="LoanTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

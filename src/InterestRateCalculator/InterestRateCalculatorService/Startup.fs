@@ -6,6 +6,7 @@ open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
 open Microsoft.OpenApi.Models
+open Domain
 
 type Startup(configuration: IConfiguration) =
     member _.Configuration = configuration
@@ -18,6 +19,7 @@ type Startup(configuration: IConfiguration) =
         services.AddSwaggerGen(fun config -> config.SwaggerDoc("v1", info)) |> ignore
         // Add framework services.
         services.AddControllers() |> ignore
+        services.AddScoped<ILoanFactory, LoanFactory>() |> ignore
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     member _.Configure(app: IApplicationBuilder, env: IWebHostEnvironment) =

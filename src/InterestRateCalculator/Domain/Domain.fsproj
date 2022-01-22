@@ -10,6 +10,7 @@
   <ItemGroup>
     <Compile Include="ValidationException.fs" />
     <Compile Include="Loan.fs" />
+    <Compile Include="LoanFactory.fs" />    
   </ItemGroup>
 
   <ItemGroup>
