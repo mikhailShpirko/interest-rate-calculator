@@ -1,7 +1,5 @@
 ﻿namespace Domain
 
-open System
-
 type Loan(amount : float, termYears : float, montlyPayment : float) = 
     do
         if (amount <= 0.) then raise (ValidationException "Loan Amount must be greater than 0")
