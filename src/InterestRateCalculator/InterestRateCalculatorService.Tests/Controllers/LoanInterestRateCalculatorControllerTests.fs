@@ -9,8 +9,7 @@ open System
 type LoanInterestRateCalculatorControllerTests () =
     let _loanFactoryMock = {
         new ILoanFactory with
-            member this.Create(amount, termYear, monthlyPayment) = new Loan(amount, termYear, monthlyPayment) }
-    
+            member this.Create(amount, termYear, monthlyPayment) = new Loan(amount, termYear, monthlyPayment) }    
     let _controller = new LoanInterestRateCalculatorController(_loanFactoryMock)
 
     [<TestMethod>]
