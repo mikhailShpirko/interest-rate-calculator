@@ -8,17 +8,18 @@ Main criteria for the project:
 ## Project structure
     .
     └── src                                                 # source code for apps
-        ├── InterestRateCalculator                          # service responsible for interest rate calculation
-        │   ├── Domain                                      # types and calculation logic for interest rate
-        │   ├── Domain.Tests                                # Unit Tests
-        │   └── InterestRateCalculatorService               # service endpoint (ASP.NET Core Web API)
         ├── AmortizationCalculator                          # service responsible for amortization calculation
         │   ├── AmortizationCalculatorService               # service endpoint (gRPC)
-        │   ├── Domain                                      # types and calculation logic for amortization rate
-        │   └── Domain.Tests                                # Unit Tests
-        └── GateWay                                         # API GateWay that facades calculation services
-            ├── WebApi                                      # entrypoint for the project (ASP.NET Core Web API)
-            └── WebApi.Tests                                # Unit Tests
+        │   ├── Domain.Tests                                # types and calculation logic for amortization rate
+        │   └── Domain                                      # Unit Tests for amortization rate types and calculation logic 
+        ├── GateWay                                         # API GateWay that facades calculation services
+        │   ├── WebApi                                      # entrypoint for the project (ASP.NET Core Web API) 
+        │   └── WebApi.Tests                                # Unit Tests
+        └── InterestRateCalculator                          # service responsible for interest rate calculation
+            ├── Domain.Tests                                # Unit Tests for interest rate types and calculation logic
+            ├── Domain                                      # types and calculation logic for interest rate
+            ├── InterestRateCalculatorService.Tests         # Unit Tests for service endpoint and its types
+            └── InterestRateCalculatorService               # service endpoint (ASP.NET Core Web API)
     
 ## Branches
 GitFlow is used as branching model

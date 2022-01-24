@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="LoanFactoryTests.fs" />
-    <Compile Include="LoanTests.fs" />
+    <Compile Include="Controllers\LoanInterestRateCalculatorControllerTests.fs" />
+    <Compile Include="Models\ResponseTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\Domain.fsproj" />
+    <ProjectReference Include="..\InterestRateCalculatorService\InterestRateCalculatorService.fsproj" />
   </ItemGroup>
 
 </Project>

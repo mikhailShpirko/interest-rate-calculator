@@ -4,10 +4,17 @@
     <TargetFramework>net5.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <WarnOn>3390;$(WarnOn)</WarnOn>
+    <AssemblyName>InterestRateCalculator.Domain</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Library.fs" />
+    <Compile Include="ValidationException.fs" />
+    <Compile Include="Loan.fs" />
+    <Compile Include="LoanFactory.fs" />    
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ExcelFinancialFunctions" Version="3.1.0" />
   </ItemGroup>
 
 </Project>
