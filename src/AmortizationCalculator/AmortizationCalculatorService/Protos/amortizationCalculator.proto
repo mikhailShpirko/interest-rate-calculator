@@ -4,23 +4,24 @@ option csharp_namespace = "AmortizationCalculatorService";
 
 package amortizationCalculator;
 
-
 service AmortizationCalculator {
-  rpc Calculate (Loan) returns (Amortization);
+  rpc CalculateMonthlyAmortization (Loan) returns (MonthlyAmortizationResponse);
 }
 
 message Loan {
-  float amount = 1;
-  float period = 2;
-  float monthlyPayment = 3;
+	float amount = 1;
+	float termYears = 2;
+	float monthlyPayment = 3;
 }
 
-message Amortization {
-  repeated PeriodicData data = 1;
+message MonthlyAmortizationResponse {
+	bool isSuccess = 1;
+	repeated MonthlyAmortization data = 2;
+	string errorMessage = 3;
 }
 
-message PeriodicData {
-  int32 period = 1;
-  int32 payment = 2;
-  int32 balance = 3;
+message MonthlyAmortization {
+	int32 monthNumber = 1;
+	float payment = 2;
+	float balance = 3;
 }
