@@ -10,7 +10,7 @@ Main criteria for the project:
     └── src                                                 # source code for apps
         ├── AmortizationCalculator                          # service responsible for amortization calculation
         │   ├── AmortizationCalculatorService               # service endpoint (gRPC)
-        │   ├── AmortizationCalculatorService.Tests         # sUnit Tests for service endpoint and its types
+        │   ├── AmortizationCalculatorService.Tests         # Unit Tests for service endpoint and its types
         │   ├── Domain.Tests                                # types and calculation logic for amortization rate
         │   └── Domain                                      # Unit Tests for amortization rate types and calculation logic 
         ├── GateWay                                         # API GateWay that facades calculation services
