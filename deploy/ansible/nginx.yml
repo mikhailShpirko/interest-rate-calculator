@@ -1,11 +1,10 @@
 - hosts: apps
-    tasks:
-        - name: Install Nginx
-        apt: pkg=nginx state=latest
-        notify:
-            - Ensure Nginx Is Started
+  tasks:
+    - name: Install Nginx
+      apt: pkg=nginx state=latest
+      notify:
+       - Ensure Nginx Is Started
 
-    handlers:
-        - name: Ensure Nginx Is Started
-        service: name=nginx state=started
-
+  handlers:
+    - name: Ensure Nginx Is Started
+      service: name=nginx state=started
