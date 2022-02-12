@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentResults" Version="3.2.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.19.4" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.42.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.43.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ServiceClients.Domain\ServiceClients.Domain.csproj" />
+  </ItemGroup>
+
+  <!-- ideally this proto should be included as a nuget package -->
+  <!-- but this is out of scope of current project -->
+  <ItemGroup>
+    <Protobuf Include="..\..\AmortizationCalculator\AmortizationCalculatorService\Protos\amortizationCalculator.proto" GrpcServices="Client" />
+  </ItemGroup>
+</Project>
