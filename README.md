@@ -14,8 +14,11 @@ Main criteria for the project:
         │   ├── Domain.Tests                                # types and calculation logic for amortization rate
         │   └── Domain                                      # Unit Tests for amortization rate types and calculation logic 
         ├── GateWay                                         # API GateWay that facades calculation services
+        │   ├── ServiceClients                              # Implementation of service clients
+        │   ├── ServiceClients.Domain                       # Contracts for service clients and data types
+        │   ├── ServiceClients.Domain.Tests                 # Unit Tests for service clients data types
         │   ├── WebApi                                      # entrypoint for the project (ASP.NET Core Web API) 
-        │   └── WebApi.Tests                                # Unit Tests
+        │   └── WebApi.Tests                                # Unit Tests for API endpoints
         └── InterestRateCalculator                          # service responsible for interest rate calculation
             ├── Domain.Tests                                # Unit Tests for interest rate types and calculation logic
             ├── Domain                                      # types and calculation logic for interest rate
