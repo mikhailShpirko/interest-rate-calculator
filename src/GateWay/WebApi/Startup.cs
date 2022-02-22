@@ -11,6 +11,8 @@ using WebApi.Configuration.InterestRateCalculatorService;
 using ServiceClients.AmortizationCalculator;
 using ServiceClients.InterestRateCalculator;
 using ServiceClients.Domain;
+using Consul;
+using System;
 
 namespace WebApi
 {
@@ -67,13 +69,39 @@ namespace WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();        
             }
 
+            if (!env.IsDevelopment())
+            {
+                //consul registration
+                var consulAddress =
+                    System.Environment.GetEnvironmentVariable("CONSUL_ADDRESS");
+
+                var consulClient = new ConsulClient(x =>
+                x.Address = new Uri(consulAddress));//Consul address requesting registration
+
+                var serviceName = "GateWay";
+                // Register service with consul
+                var registration = new AgentServiceRegistration()
+                {
+                    ID = Guid.NewGuid().ToString(),
+                    Name = serviceName,
+                    Address = "localhost",
+                    Port = 8989,
+                    Tags = new[] { $"urlprefix-/{serviceName}" }//Add a tag tag in the format of urlprefix-/servicename so that Fabio can recognize it
+                };
+
+                consulClient.Agent.ServiceRegister(registration).Wait();//Register when the service starts, the internal implementation is actually to register using the Consul API (initiated by HttpClient)
+                lifetime.ApplicationStopping.Register(() =>
+                {
+                    consulClient.Agent.ServiceDeregister(registration.ID).Wait();//Unregister when the service stops
+                });
+            }
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi GateWay v1"));
 
