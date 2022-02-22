@@ -5,6 +5,30 @@ Main criteria for the project:
 - Project should use several programming languages for the apps
 - Code should be covered Unit Tests
 
+## Launch instructions
+Execute the following commands to run the project:
+
+Build services:
+
+```
+docker build -t gateway:v1 -f docker/Dockerfile.GateWay src/Gateway
+```
+
+```
+docker build -t amortization_calculator:v1 -f docker/Dockerfile.AmortizationCalculator src/AmortizationCalculator
+```
+
+```
+docker build -t interest_rate_calculator:v1 -f docker/Dockerfile.InterestRateCalculator src/InterestRateCalculator
+```
+
+Run the project:
+```
+docker compose -f docker/docker-compose.yaml -p interest-rate-calculator up -d
+```
+
+After that you will be able to test the API documentation via http://localhost:8989/swagger/
+
 ## Project structure
     .
     └── src                                                 # source code for apps
