@@ -1,0 +1,22 @@
+version: '3'
+services:
+  amortization_calculator:
+    image: amortization_calculator:v1
+    container_name: amortization_calculator
+    ports: ['8987:80']
+
+  interest_rate_calculator:
+    image: interest_rate_calculator:v1
+    container_name: interest_rate_calculator
+    ports: ['8988:80']
+    
+  gateway:
+    image: gateway:v1
+    container_name: gateway
+    ports: ['8989:80']
+    environment:
+      AMORTIZATION_CALCULATOR_SERVICE_ADDRESS: 'http://host.docker.internal:8987'
+      INTEREST_RATE_CALCULATOR_SERVICE_ADDRESS: 'http://host.docker.internal:8988'
+    depends_on:
+      - interest_rate_calculator
+      - amortization_calculator
