@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Http;
 using WebApi.Models;
 using AutoMapper;
 using ServiceClients.Domain.DTO;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace WebApi.Controllers
 {
@@ -16,18 +18,20 @@ namespace WebApi.Controllers
     [Route("[controller]")]
     public class LoanInterestRateController : BaseApiController
     {
-
         private readonly IAmortizationCalculator _amortizationCalculator;
         private readonly IInterestRateCalculator _interestRateCalculator;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
         public LoanInterestRateController(IAmortizationCalculator amortizationCalculator,
             IInterestRateCalculator interestRateCalculator,
-            IMapper mapper)
+            IMapper mapper,
+            ILogger<LoanInterestRateController> logger)
         {
             _amortizationCalculator = amortizationCalculator;
             _interestRateCalculator = interestRateCalculator;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -61,8 +65,9 @@ namespace WebApi.Controllers
 
                 return Ok(loanInterestRate);
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex.ToString());
                 return StatusCode(500, new InternalServerErrorModel());
             }
         }
