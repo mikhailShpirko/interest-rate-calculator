@@ -1,27 +1,22 @@
 version: '3'
 services:
-  gateway:
-    build:
-      context: ./src/GateWay
-      dockerfile: Dockerfile.GateWay
-    ports: '8989:80'
-    environment:
-      AMORTIZATION_CALCULATOR_SERVICE_ADDRESS: 'localhost:8987'
-      INTEREST_RATE_CALCULATOR_SERVICE_ADDRESS: 'localhost:8988'
-    depends_on:
-      interest_rate_calculator:
-        condition: service_healthy
-      amortization_calculator:
-        condition: service_healthy
-
   amortization_calculator:
-    build:
-      context: ./src/AmortizationCalculator
-      dockerfile: Dockerfile.Dockerfile.AmortizationCalculator
-    ports: '8987:80'
+    image: amortization_calculator:v1
+    container_name: amortization_calculator
+    ports: ['8987:80']
 
   interest_rate_calculator:
-    build:
-      context: ./src/InterestRateCalculator
-      dockerfile: Dockerfile.InterestRateCalculator
-    ports: '8988:80'
+    image: interest_rate_calculator:v1
+    container_name: interest_rate_calculator
+    ports: ['8988:80']
+    
+  gateway:
+    image: gateway:v1
+    container_name: gateway
+    ports: ['8989:80']
+    environment:
+      AMORTIZATION_CALCULATOR_SERVICE_ADDRESS: 'http://host.docker.internal:8987'
+      INTEREST_RATE_CALCULATOR_SERVICE_ADDRESS: 'http://host.docker.internal:8988'
+    depends_on:
+      - interest_rate_calculator
+      - amortization_calculator
