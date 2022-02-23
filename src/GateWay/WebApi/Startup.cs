@@ -18,6 +18,7 @@ namespace WebApi
 {
     public class Startup
     {
+        private const string HEALTH_CHECK_ENDPOINT = "HealthCheck";
         public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
@@ -30,6 +31,7 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHealthChecks();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -82,17 +84,28 @@ namespace WebApi
                 var consulAddress =
                     System.Environment.GetEnvironmentVariable("CONSUL_ADDRESS");
 
+                var serviceAddress =
+                    System.Environment.GetEnvironmentVariable("SERVICE_ADDRESS");
+
                 var consulClient = new ConsulClient(x =>
                 x.Address = new Uri(consulAddress));//Consul address requesting registration
+
+                var httpCheck = new AgentServiceCheck()
+                {
+                    DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(5),//How long does it take to register after the service starts
+                    Interval = TimeSpan.FromSeconds(10),//Health check interval, or heartbeat interval
+                    HTTP = $"{serviceAddress}/{HEALTH_CHECK_ENDPOINT}",//Health check address
+                    Timeout = TimeSpan.FromSeconds(5)
+                };
 
                 var serviceName = "GateWay";
                 // Register service with consul
                 var registration = new AgentServiceRegistration()
                 {
+                    Checks = new[] { httpCheck },
                     ID = Guid.NewGuid().ToString(),
                     Name = serviceName,
-                    Address = "localhost",
-                    Port = 8989,
+                    Address = serviceAddress,
                     Tags = new[] { $"urlprefix-/{serviceName}" }//Add a tag tag in the format of urlprefix-/servicename so that Fabio can recognize it
                 };
 
@@ -101,6 +114,7 @@ namespace WebApi
                 {
                     consulClient.Agent.ServiceDeregister(registration.ID).Wait();//Unregister when the service stops
                 });
+
             }
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi GateWay v1"));
@@ -113,6 +127,7 @@ namespace WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks($"/{HEALTH_CHECK_ENDPOINT}");
             });
         }
     }
