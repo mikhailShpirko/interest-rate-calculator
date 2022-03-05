@@ -19,6 +19,7 @@ type Startup(configuration: IConfiguration) =
         services.AddSwaggerGen(fun config -> config.SwaggerDoc("v1", info)) |> ignore
         // Add framework services.
         services.AddControllers() |> ignore
+        services.AddHealthChecks() |> ignore
         services.AddScoped<ILoanFactory, LoanFactory>() |> ignore
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -32,4 +33,5 @@ type Startup(configuration: IConfiguration) =
            .UseAuthorization()
            .UseEndpoints(fun endpoints ->
                 endpoints.MapControllers() |> ignore
+                endpoints.MapHealthChecks("/HealthCheck") |> ignore
             ) |> ignore

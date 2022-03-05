@@ -1,0 +1,4 @@
+FROM consul:1.11 AS base
+WORKDIR /
+COPY ["consul/services.json", "consul/config/"]
+EXPOSE 8500

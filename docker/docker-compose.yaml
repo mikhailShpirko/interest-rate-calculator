@@ -1,22 +1,53 @@
 version: '3'
 services:
+  service_discovery:
+    image: service_discovery:v1
+    build:
+      context: .
+      dockerfile: Dockerfile.ServiceDiscovery
+    container_name: service_discovery
+    ports: 
+      - '8500:8500'
+    networks:
+      interest_rate_network:
+        ipv4_address: '${SERVICE_DISCOVERY_IP}'
+    
   amortization_calculator:
     image: amortization_calculator:v1
     container_name: amortization_calculator
-    ports: ['8987:80']
+    ports: 
+      - '8987:80'
+    networks:
+      interest_rate_network:
+        ipv4_address: '${AMORTIZATION_CALCULATOR_SERVICE_IP}'
 
   interest_rate_calculator:
     image: interest_rate_calculator:v1
     container_name: interest_rate_calculator
-    ports: ['8988:80']
+    ports: 
+      - '8988:80'
+    networks:
+      interest_rate_network:
+        ipv4_address: '${INTEREST_RATE_CALCULATOR_SERVICE_IP}'
     
   gateway:
     image: gateway:v1
     container_name: gateway
-    ports: ['8989:80']
+    ports: 
+      - '8989:80'
     environment:
-      AMORTIZATION_CALCULATOR_SERVICE_ADDRESS: 'http://host.docker.internal:8987'
-      INTEREST_RATE_CALCULATOR_SERVICE_ADDRESS: 'http://host.docker.internal:8988'
+      AMORTIZATION_CALCULATOR_SERVICE_ADDRESS: '${AMORTIZATION_CALCULATOR_SERVICE_ADDRESS}'
+      INTEREST_RATE_CALCULATOR_SERVICE_ADDRESS: '${INTEREST_RATE_CALCULATOR_SERVICE_ADDRESS}'
     depends_on:
       - interest_rate_calculator
       - amortization_calculator
+    networks:
+      interest_rate_network:
+        ipv4_address: '${GATEWAY_IP}'
+
+networks:
+  interest_rate_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 33.22.11.0/16
