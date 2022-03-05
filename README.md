@@ -31,6 +31,8 @@ After that you will be able to test the API documentation via http://localhost:8
 
 ## Project structure
     .
+    ├── docker                                              # docker files for all services, service discovery, compose file
+    │   └── consul                                          # configuration files for HashiCorp Consul service discovery
     └── src                                                 # source code for apps
         ├── AmortizationCalculator                          # service responsible for amortization calculation
         │   ├── AmortizationCalculatorService               # service endpoint (gRPC)
