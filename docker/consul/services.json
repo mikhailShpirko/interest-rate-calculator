@@ -1,0 +1,53 @@
+{
+	"services": [
+		{
+			"id": "gateway",
+			"name": "gateway",
+			"address": "http://33.22.11.5",
+			"checks": [
+				{
+					"id": "GatewayHealthCheck",
+					"name": "Health Check",
+					"http": "http://33.22.11.5/HealthCheck",
+					"tls_server_name": "",
+					"tls_skip_verify": false,
+					"method": "GET",
+					"interval": "10s",
+					"timeout": "5s"
+				}
+			]
+		},
+		{
+			"id": "interest-rate-calculator",
+			"name": "interest-rate-calculator",
+			"address": "http://33.22.11.4",
+			"checks": [
+				{
+					"id": "InterestRateServiceHealthCheck",
+					"name": "Health Check",
+					"http": "http://33.22.11.4/HealthCheck",
+					"tls_server_name": "",
+					"tls_skip_verify": false,
+					"method": "GET",
+					"interval": "10s",
+					"timeout": "5s"
+				}
+			]
+		},
+		{
+			"id": "amortization-calculator",
+			"name": "amortization-calculator",
+			"address": "http://33.22.11.3",
+			"checks": [
+				{
+					"id": "AmortizationServiceHealthCheck",
+					"name": "Health Check",
+					"grpc": "33.22.11.3:80",
+					"grpc_use_tls": false,
+					"interval": "10s",
+					"timeout": "5s"
+				}
+			]
+		}
+	]
+}
