@@ -2,6 +2,7 @@ using AmortizationCalculatorService.Endpoints;
 using Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Serilog;
 using System;
 
 namespace AmortizationCalculatorService.Tests.Services
@@ -9,6 +10,7 @@ namespace AmortizationCalculatorService.Tests.Services
     [TestClass]
     public class AmortizationCalculatorEndpointTests
     {
+        private readonly Mock<ILogger> _loggerMock = new Mock<ILogger>();
         [TestMethod]
         public void CalculateMonthlyAmortization_ValidCalculationFactory_SuccessResponse()
         {
@@ -18,7 +20,8 @@ namespace AmortizationCalculatorService.Tests.Services
                     f.Create(It.IsAny<float>(), It.IsAny<float>(), It.IsAny<float>()))
                 .Returns(new LoanMonthlyAmortization(1f, 2f, 3f));
 
-            var serviceEndpoint = new AmortizationCalculatorEndpoint(loanMonthlyAmortizationFactory.Object);
+            var serviceEndpoint = new AmortizationCalculatorEndpoint(loanMonthlyAmortizationFactory.Object,
+                _loggerMock.Object);
             var response = serviceEndpoint.CalculateMonthlyAmortization(
                 new Loan
                 {
@@ -46,7 +49,8 @@ namespace AmortizationCalculatorService.Tests.Services
                     f.Create(It.IsAny<float>(), It.IsAny<float>(), It.IsAny<float>()))
                 .Throws(new Exception("Test error"));
 
-            var serviceEndpoint = new AmortizationCalculatorEndpoint(loanMonthlyAmortizationFactory.Object);
+            var serviceEndpoint = new AmortizationCalculatorEndpoint(loanMonthlyAmortizationFactory.Object,
+                _loggerMock.Object);
             var response = serviceEndpoint.CalculateMonthlyAmortization(
                 new Loan
                 {

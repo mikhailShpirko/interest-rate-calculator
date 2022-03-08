@@ -1,5 +1,40 @@
 version: '3'
 services:
+  log_storage:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.0
+    container_name: log_storage
+    environment:
+      - node.name=log_storage
+      - cluster.name=log-storage-docker-cluster
+      - cluster.initial_master_nodes=log_storage
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - interest_rate_volume:/usr/share/elasticsearch/data
+    ports:
+      - '9200:9200'
+    networks:
+      interest_rate_network:
+        ipv4_address: '${LOG_STORAGE_IP}'
+       
+  log_viewer: 
+    image: docker.elastic.co/kibana/kibana:7.9.0
+    container_name: log_viewer
+    ports:
+      - '5601:5601'
+    environment:
+      ELASTICSEARCH_URL: '${LOG_STORAGE_ADDRESS}'
+      ELASTICSEARCH_HOSTS: '${LOG_STORAGE_ADDRESS}'
+    depends_on:
+      - log_storage
+    networks:
+      interest_rate_network:
+        ipv4_address: '${LOG_VIEWER_IP}'
+  
   service_discovery:
     image: service_discovery:v1
     build:
@@ -15,6 +50,8 @@ services:
   amortization_calculator:
     image: amortization_calculator:v1
     container_name: amortization_calculator
+    environment:
+      ELASTIC_SEARCH_LOGS_ENDPOINT_ADDRESS: '${LOG_STORAGE_ADDRESS}'
     ports: 
       - '8987:80'
     networks:
@@ -24,6 +61,8 @@ services:
   interest_rate_calculator:
     image: interest_rate_calculator:v1
     container_name: interest_rate_calculator
+    environment:
+      ELASTIC_SEARCH_LOGS_ENDPOINT_ADDRESS: '${LOG_STORAGE_ADDRESS}'
     ports: 
       - '8988:80'
     networks:
@@ -38,12 +77,17 @@ services:
     environment:
       AMORTIZATION_CALCULATOR_SERVICE_ADDRESS: '${AMORTIZATION_CALCULATOR_SERVICE_ADDRESS}'
       INTEREST_RATE_CALCULATOR_SERVICE_ADDRESS: '${INTEREST_RATE_CALCULATOR_SERVICE_ADDRESS}'
+      ELASTIC_SEARCH_LOGS_ENDPOINT_ADDRESS: '${LOG_STORAGE_ADDRESS}'
     depends_on:
       - interest_rate_calculator
       - amortization_calculator
     networks:
       interest_rate_network:
         ipv4_address: '${GATEWAY_IP}'
+
+volumes:
+  interest_rate_volume:
+      driver: local
 
 networks:
   interest_rate_network:
