@@ -29,6 +29,13 @@ docker compose -f docker/docker-compose.yaml -p interest-rate-calculator up -d
 
 After that you will be able to test the API documentation via http://localhost:8989/swagger/
 
+Service discovery with health statuses will be available at: http://localhost:8500/
+
+Logs can be viewed at: http://localhost:5601/ index patterns for logs are:
+ - gateway-logs-*
+ - amortizationcalculator-logs-*
+ - interestratecalculator-logs-*
+
 ## Project structure
     .
     ├── docker                                              # docker files for all services, service discovery, compose file

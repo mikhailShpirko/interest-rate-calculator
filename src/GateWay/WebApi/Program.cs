@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebApi
 {
@@ -18,10 +15,34 @@ namespace WebApi
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureLogging(logging =>
+                .UseSerilog((context, configuration) =>
                 {
-                    logging.ClearProviders();
-                    logging.AddConsole();
+                    var elasticSearchLogsEndpointAddress = Environment
+                        .GetEnvironmentVariable("ELASTIC_SEARCH_LOGS_ENDPOINT_ADDRESS");
+
+                    configuration
+                        .Enrich
+                        .FromLogContext()
+                        .Enrich
+                        .WithMachineName()
+                        .WriteTo
+                        .Console();
+
+                    if (!string.IsNullOrWhiteSpace(elasticSearchLogsEndpointAddress))
+                    {
+                        var elasticSearchSinkOptions = 
+                            new ElasticsearchSinkOptions(new Uri(elasticSearchLogsEndpointAddress))
+                            {
+                                IndexFormat = $"GateWay-Logs-{DateTime.UtcNow:yyyy-MM}",
+                                AutoRegisterTemplate = true,
+                                NumberOfShards = 2,
+                                NumberOfReplicas = 1
+                            };
+
+                        configuration
+                            .WriteTo
+                            .Elasticsearch(elasticSearchSinkOptions);
+                    }
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

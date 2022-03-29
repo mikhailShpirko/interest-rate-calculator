@@ -3,6 +3,7 @@ using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Serilog;
 using ServiceClients.Domain;
 using ServiceClients.Domain.DTO;
 using System;
@@ -20,12 +21,14 @@ namespace WebApi.Tests.Controllers
     {
         private readonly Mock<IAmortizationCalculatorServiceClient> _amortizationCalculatorMock;
         private readonly Mock<IInterestRateCalculatorServiceClient> _interestRateCalculatorMock;
+        private readonly Mock<ILogger> _loggerMock;
         private readonly IMapper _mapper;
 
         public LoanInterestRateControllerTests()
         {
             _amortizationCalculatorMock = new Mock<IAmortizationCalculatorServiceClient>();
             _interestRateCalculatorMock = new Mock<IInterestRateCalculatorServiceClient>();
+            _loggerMock = new Mock<ILogger>();
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new LoanInterestRateProfile());
@@ -51,7 +54,8 @@ namespace WebApi.Tests.Controllers
             var controller = new LoanInterestRateController(
                 _amortizationCalculatorMock.Object,
                 _interestRateCalculatorMock.Object,
-                _mapper);
+                _mapper,
+                _loggerMock.Object);
 
             var result = await controller.CalculateAsync(new LoanModel());
 
@@ -77,7 +81,8 @@ namespace WebApi.Tests.Controllers
             var controller = new LoanInterestRateController(
                 _amortizationCalculatorMock.Object,
                 _interestRateCalculatorMock.Object,
-                _mapper);
+                _mapper,
+                _loggerMock.Object);
 
             var result = await controller.CalculateAsync(new LoanModel());
 
@@ -103,7 +108,8 @@ namespace WebApi.Tests.Controllers
             var controller = new LoanInterestRateController(
                 _amortizationCalculatorMock.Object,
                 _interestRateCalculatorMock.Object,
-                _mapper);
+                _mapper,
+                _loggerMock.Object);
 
             var result = await controller.CalculateAsync(new LoanModel());
 
@@ -128,7 +134,8 @@ namespace WebApi.Tests.Controllers
             var controller = new LoanInterestRateController(
                 _amortizationCalculatorMock.Object,
                 _interestRateCalculatorMock.Object,
-                _mapper);
+                _mapper,
+                _loggerMock.Object);
 
             var result = await controller.CalculateAsync(new LoanModel());
 
@@ -154,7 +161,8 @@ namespace WebApi.Tests.Controllers
             var controller = new LoanInterestRateController(
                 _amortizationCalculatorMock.Object,
                 _interestRateCalculatorMock.Object,
-                _mapper);
+                _mapper,
+                _loggerMock.Object);
 
             var result = await controller.CalculateAsync(new LoanModel());
 

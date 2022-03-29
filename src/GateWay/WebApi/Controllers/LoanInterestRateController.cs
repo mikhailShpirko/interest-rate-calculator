@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using WebApi.Models;
 using AutoMapper;
 using ServiceClients.Domain.DTO;
-using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
 
 namespace WebApi.Controllers
@@ -26,7 +26,7 @@ namespace WebApi.Controllers
         public LoanInterestRateController(IAmortizationCalculator amortizationCalculator,
             IInterestRateCalculator interestRateCalculator,
             IMapper mapper,
-            ILogger<LoanInterestRateController> logger)
+            ILogger logger)
         {
             _amortizationCalculator = amortizationCalculator;
             _interestRateCalculator = interestRateCalculator;
@@ -40,6 +40,8 @@ namespace WebApi.Controllers
         {
             try
             {
+                _logger.Information("Starting interest rate calculation for loan {Loan}", loanModel);
+
                 var loanDTO = _mapper.Map<LoanDTO>(loanModel);
                 var interestRateCalculationResult = await _interestRateCalculator
                     .CalculateLoanInterestRateAsync(loanDTO);
@@ -67,7 +69,7 @@ namespace WebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.ToString());
+                _logger.Error(ex, "Error calculating interest rate for loan {Loan}", loanModel);
                 return StatusCode(500, new InternalServerErrorModel());
             }
         }
