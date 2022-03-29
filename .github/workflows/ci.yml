@@ -27,6 +27,13 @@ jobs:
         dotnet build "src/AmortizationCalculator" --no-restore
         dotnet build "src/GateWay" --no-restore
         dotnet build "src/InterestRateCalculator" --no-restore
+
+  test:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
     - name: Test
       run: |
         dotnet test "src/AmortizationCalculator" --no-build --verbosity normal
