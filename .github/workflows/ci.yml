@@ -18,8 +18,17 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: |
+        dotnet restore "src/AmortizationCalculator"
+        dotnet restore "src/GateWay"
+        dotnet restore "src/InterestRateCalculator"
     - name: Build
-      run: dotnet build --no-restore
+      run: |
+        dotnet build "src/AmortizationCalculator" --no-restore
+        dotnet build "src/GateWay" --no-restore
+        dotnet build "src/InterestRateCalculator" --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: |
+        dotnet test "src/AmortizationCalculator" --no-build --verbosity normal
+        dotnet test "src/GateWay" --no-build --verbosity normal
+        dotnet test "src/InterestRateCalculator" --no-build --verbosity normal
