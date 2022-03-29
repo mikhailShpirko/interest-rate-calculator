@@ -7,7 +7,7 @@ on:
     branches: [ develop ]
 
 jobs:
-  setup:
+  build:
 
     runs-on: ubuntu-latest
 
@@ -17,13 +17,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-
-  build:
-    needs: setup
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Restore dependencies
+    - name: Restore Dependencies
       run: |
         dotnet restore "src/AmortizationCalculator"
         dotnet restore "src/GateWay"
@@ -39,6 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+    - uses: actions/checkout@v2
     - name: Run Unit Tests
       run: |
         dotnet test "src/AmortizationCalculator" --no-build --verbosity normal
