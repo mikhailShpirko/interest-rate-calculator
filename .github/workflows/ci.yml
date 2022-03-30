@@ -3,11 +3,9 @@ name: CI
 on:
   push:
     branches: [ main, develop, release ]
-  pull_request:
-    branches: [ develop ]
 
 jobs:
-  build:
+  build_amortization_calculator:
 
     runs-on: ubuntu-latest
 
@@ -18,24 +16,63 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore Dependencies
-      run: |
-        dotnet restore "src/AmortizationCalculator"
-        dotnet restore "src/GateWay"
-        dotnet restore "src/InterestRateCalculator"
+      run: dotnet restore "src/AmortizationCalculator"
     - name: Build Projects
-      run: |
-        dotnet build "src/AmortizationCalculator" --no-restore
-        dotnet build "src/GateWay" --no-restore
-        dotnet build "src/InterestRateCalculator" --no-restore
+      run: dotnet build "src/AmortizationCalculator" --no-restore
 
-  test:
-    needs: build
+  test_amortization_calculator:
+    needs: build_amortization_calculator
     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v2
     - name: Run Unit Tests
-      run: |
-        dotnet test "src/AmortizationCalculator" --no-build --verbosity normal
-        dotnet test "src/GateWay" --no-build --verbosity normal
-        dotnet test "src/InterestRateCalculator" --no-build --verbosity normal
+      run: dotnet test "src/AmortizationCalculator" --no-build --verbosity normal
+        
+  build_interest_rate_calculator:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore Dependencies
+      run: dotnet restore "src/InterestRateCalculator"
+    - name: Build Projects
+      run: dotnet build "src/InterestRateCalculator" --no-restore
+
+  test_interest_rate_calculator:
+    needs: build_interest_rate_calculator
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run Unit Tests
+      run: dotnet test "src/InterestRateCalculator" --no-build --verbosity normal
+
+  build_gateway:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore Dependencies
+      run: dotnet restore "src/GateWay"
+    - name: Build Projects
+      run: dotnet build "src/GateWay" --no-restore
+
+  test_gateway:
+    needs: build_gateway
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run Unit Tests
+      run: dotnet test "src/GateWay" --no-build --verbosity normal
